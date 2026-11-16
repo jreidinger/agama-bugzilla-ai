@@ -1,0 +1,14 @@
+# Containerfile.claude - openSUSE container for Claude Code CLI
+FROM registry.opensuse.org/opensuse/tumbleweed:latest
+
+# System dependencies layer (cached across Claude Code version updates)
+RUN zypper --non-interactive in nodejs npm git curl bash ripgrep ca-certificates && \
+    zypper clean -a
+
+# Parameterized version argument (invalidates cache ONLY for npm when a new version is released)
+ARG CLAUDE_VERSION=latest
+RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_VERSION}
+
+WORKDIR /workspace
+ENTRYPOINT ["claude"]
+CMD []
