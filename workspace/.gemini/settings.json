@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "bugzilla": {
+      "url": "http://127.0.0.1:9125/mcp/",
+      "type": "http"
+    }
+  }
+}

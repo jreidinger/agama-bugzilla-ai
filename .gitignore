@@ -1,0 +1,20 @@
+# Secrets and authentication tokens (NEVER commit these)
+secrets/*
+!secrets/*.example
+!secrets/*.example.txt
+!secrets/README.md
+*.token
+*.key
+.env
+.env.*
+!.env.example
+
+# Temporary and runtime files
+*.log
+tmp/
+.DS_Store
+
+# Gemini CLI runtime artifacts
+workspace/.gemini/tmp/
+workspace/.gemini/history/
+workspace/.gemini/cache/
