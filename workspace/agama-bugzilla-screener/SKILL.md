@@ -28,6 +28,11 @@ When asked *"which bugs needs my attention"* or *"what are my duties as maintain
 
 #### Step 1.1: Immediate Action — Team Mailing List Needinfos (`yast-maintainers`, `yast-internal`, `autoyast-maintainers`)
 - **Rule**: Bugs with `needinfo?` set on team mailing lists **must be answered immediately** by the maintainer. No grace period!
+- **YaST Maintenance Scope**: The maintainer must also take care of YaST bugs filed against SLE 12 and SLE 15, as well as parts of YaST still used by Agama (only **bootloader**, **storage**, **yast2-ruby-bindings**, and **core**).
+- **YaST Triage & Reassignment Rule**: Before reassigning any YaST bug, check:
+  - If the bug is against **SLE 12** or **SLE 15**: Maintainer must take care of it.
+  - If the bug affects YaST parts used by Agama (**bootloader**, **storage**, **yast2-ruby-bindings**, **core**): Maintainer must take care of it.
+  - **Reassign to `yast-community` ONLY IF** it is not used by Agama or not in SLE.
 - Run queries (see [references/queries.md](references/queries.md)):
   - `bugs_quicksearch(query='flag:needinfo?(yast-maintainers)')`
   - `bugs_quicksearch(query='flag:needinfo?(yast-internal)')`
@@ -56,7 +61,7 @@ Find active Agama bugs with no pending needinfo:
 - For each truly untriaged bug (no GitHub issue in `url` or comments), perform diagnostic screening:
   - **Card Ready**: Meets all 4 criteria (see [references/card-readiness.md](references/card-readiness.md)). Prepare backlog card markdown and remind maintainer to set the Bugzilla URL field to the newly created GitHub card link (or post it in a comment if URL is occupied).
   - **Missing Logs/Info**: Prepare draft comment requesting logs via `agama logs store` or Web UI download, and set `needinfo? <reporter>`.
-  - **Out of Scope**: Issue is in kernel, storage driver, systemd, or wicked. Prepare reassignment recommendation.
+  - **Out of Scope**: Issue is in kernel, storage driver, systemd, or NetworkManager. Prepare reassignment recommendation. (Note: YaST bugs against SLE 12/15 or in bootloader, storage, yast2-ruby-bindings, or core are in scope for the maintainer; only reassign to `yast-community` if not used by Agama or not in SLE).
   - **Duplicate**: Matches an existing issue. Prepare duplicate closure draft.
 
 #### Step 1.5: Output the Maintainer Action Plan

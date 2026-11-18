@@ -37,6 +37,11 @@ Setting needinfo on reporter.
 
 According to Agama principles: *"If a bug is outside of Agama responsibilities, reassign it immediately. Do not 'burn time' on a component you are not familiar with."*
 
+**Important YaST Policy Check Before Reassigning:**
+- Maintainers must take care of YaST bugs against **SLE 12** and **SLE 15** — do NOT reassign them.
+- Maintainers must take care of YaST parts still used by Agama (only **bootloader**, **storage**, **yast2-ruby-bindings**, and **core**) — do NOT reassign them.
+- Reassign to `yast-community` **ONLY IF** the bug is not used by Agama or not in SLE.
+
 ### Template: Out-of-Scope Reassignment
 ```text
 Hello,
@@ -57,25 +62,27 @@ This is outside of Agama installer scope. Reassigning to <TARGET_PRODUCT> / <TAR
 
 When a bug has `needinfo?` set on `yast-maintainers` or `yast-internal`:
 
-### Template A: Agama Confirms Bug & Takes Ownership
+### Template A: Team Confirms Bug & Takes Ownership (Agama or SLE 12/15 YaST)
 ```text
 Hello,
 
-We have reviewed this report from the Agama side. We confirm the issue and will track it in the Agama backlog for an upcoming sprint.
+We have reviewed this report. We confirm the issue and will track it in the team backlog for an upcoming sprint.
 
 Clearing needinfo on yast-maintainers.
 ```
 **Maintainer Action**: Clear needinfo on `yast-maintainers` / `yast-internal` (`status = X`).
 
-### Template B: Request Belongs to Classic YaST
+### Template B: Community YaST (Not in SLE and Not Used by Agama)
+Use this template **only** when the bug is confirmed to be outside SLE 12/15 and does not affect the YaST parts used by Agama (bootloader, storage, yast2-ruby-bindings, core):
 ```text
 Hello,
 
-This report refers to legacy YaST (yast2) installation workflows rather than Agama. Reassigning to YaST2 / <Classic Component>.
+This YaST issue affects community openSUSE only, is not part of SLE (SLE 12 / SLE 15), and does not affect components used by Agama (bootloader, storage, yast2-ruby-bindings, core).
 
+Reassigning to yast-community.
 Clearing needinfo on yast-maintainers.
 ```
-**Maintainer Action**: Clear needinfo on maintainers, reassign to Classic YaST component.
+**Maintainer Action**: Clear needinfo on maintainers, reassign to `yast-community`.
 
 ---
 
@@ -190,9 +197,9 @@ Use when the maintainer asks *"which bugs needs my attention"* or *"what are my 
 *(If none: "✅ No untriaged Agama bugs waiting.")*
 
 #### 5. 📝 Action Checklist for Today's Shift
-- [ ] Answer team list needinfo on bsc#<ID> (immediate!)
-- [ ] Ping <Team Member> (or backup <Backup Name>) about bsc#<ID> ($\ge$ 1 day pending)
-- [ ] Review logs on bsc#<ID> (reporter replied)
-- [ ] Paste prepared card for bsc#<ID> into Agama backlog & set Bugzilla URL to GitHub issue link
-- [ ] Post draft comment on bsc#<ID> requesting logs via `agama logs store` and set needinfo?
+- Answer team list needinfo on bsc#<ID> (immediate!)
+- Ping <Team Member> (or backup <Backup Name>) about bsc#<ID> ($\ge$ 1 day pending)
+- Review logs on bsc#<ID> (reporter replied)
+- Paste prepared card for bsc#<ID> into Agama backlog & set Bugzilla URL to GitHub issue link
+- Post draft comment on bsc#<ID> requesting logs via `agama logs store` and set needinfo?
 ```

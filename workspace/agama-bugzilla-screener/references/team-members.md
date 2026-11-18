@@ -45,6 +45,8 @@ When `needinfo?` is requested on these lists, the sprint maintainer must answer 
 | `yast-internal` | `yast-internal@suse.de` | Bugs assigned to Installer team, shared for both YaST and Agama |
 | `autoyast-maintainers` | `autoyast-maintainers@suse.de` | AutoYaST incoming queue |
 
+*Note on YaST Scope*: The maintainer must handle YaST bugs filed against SLE 12 and SLE 15, and YaST parts still used by Agama (bootloader, storage, yast2-ruby-bindings, core). Only reassign to `yast-community` if not used by Agama or not in SLE.
+
 ---
 
 ## 4. Maintenance Rotation Cadence

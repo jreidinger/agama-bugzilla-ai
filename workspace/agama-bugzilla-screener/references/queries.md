@@ -170,9 +170,23 @@ include_fields = "count,id,creator,creation_time,text,attachment_id"
 
 ---
 
-## 7. Distinguishing Agama vs. Classic YaST
+## 7. YaST vs. Agama Responsibilities & Reassignment Rules
 
-Some SUSE/openSUSE products still contain legacy YaST components:
-- **Agama**: Modern web-based, service-driven installer (`agama-core`, `agama-service`, `agama-web-ui`, etc.).
-- **Classic YaST**: YCP/Ruby modules (`yast2-storage-ng`, `yast2-network`, `yast2-installation`).
-If a bug is filed in an Agama component but describes YaST Classic behavior (or vice-versa), prepare a reassignment recommendation.
+The team maintains both the modern Agama installer and enterprise YaST components under specific rules:
+
+### A. Maintainer YaST Scope
+- **SLE 12 and SLE 15**: Bug maintainers must take care of YaST bugs filed against SUSE Linux Enterprise 12 and 15 (e.g., SLES 12, SLES 15). These are enterprise-supported and within the team's maintenance duties.
+- **Parts of YaST Still Used by Agama**: Only the following YaST components are still used by Agama:
+  - **bootloader** (e.g., `yast2-bootloader`)
+  - **storage** (e.g., `yast2-storage-ng`, `libstorage-ng`)
+  - **yast2-ruby-bindings**
+  - **core** (e.g., `yast2-core`, `yast2`)
+  Bugs in these components must be handled by the maintainer.
+
+### B. Triage & Reassignment Gate
+Before reassigning any YaST bug:
+1. **Check Product**: Is the bug filed against SLE 12 or SLE 15? If **yes**, the maintainer must handle it. Do NOT reassign.
+2. **Check Component**: Is the affected YaST component used by Agama (bootloader, storage, yast2-ruby-bindings, core)? If **yes**, the maintainer must handle it. Do NOT reassign.
+3. **Reassign to `yast-community` ONLY IF**:
+   - The bug is **not used by Agama** (outside bootloader, storage, yast2-ruby-bindings, core), **AND**
+   - The bug is **not in SLE** (e.g., openSUSE community-only YaST modules).

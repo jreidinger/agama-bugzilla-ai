@@ -32,7 +32,7 @@ When screening a bug, classify it into one of these states:
 
 - **READY**: Meets all 4 points. Generate the Card Proposal below for the maintainer.
 - **NEEDS_INFO**: Fails point 1, 2, or 4. Draft a polite request for logs or clarification (see `references/comment-templates.md`).
-- **OUT_OF_SCOPE**: Issue lies outside Agama (e.g. kernel panic, libstorage-ng crash, systemd, wicked, firmware). Propose immediate reassignment.
+- **OUT_OF_SCOPE**: Issue lies outside Agama and team scope (e.g. kernel panic, systemd, wicked, firmware). Propose immediate reassignment. (Note: YaST bugs against SLE 12/15 or YaST components used by Agama — bootloader, storage, yast2-ruby-bindings, core — are maintained by the team; only reassign to `yast-community` if not used by Agama or not in SLE).
 - **DUPLICATE**: Same root cause as an existing issue. Suggest duplicate resolution.
 
 ---
