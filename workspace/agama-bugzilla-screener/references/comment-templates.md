@@ -22,7 +22,7 @@ You can collect the logs in either of the following ways:
 Please attach the resulting log archive to this bug report. If applicable, please also mention:
 - The installation target (bare-metal hardware model or VM type)
 - The disk layout and storage configuration
-- The exact Agama ISO version or build number
+- The exact product, version or ISO build (e.g., openSUSE Tumbleweed snapshot, openSUSE Leap, or OBS systemsmanagement:Agama package version)
 
 Setting needinfo on reporter.
 ```
@@ -37,10 +37,7 @@ Setting needinfo on reporter.
 
 According to Agama principles: *"If a bug is outside of Agama responsibilities, reassign it immediately. Do not 'burn time' on a component you are not familiar with."*
 
-**Important YaST Policy Check Before Reassigning:**
-- Maintainers must take care of YaST bugs against **SLE 12** and **SLE 15** — do NOT reassign them.
-- Maintainers must take care of YaST parts still used by Agama (only **bootloader**, **storage**, **yast2-ruby-bindings**, and **core**) — do NOT reassign them.
-- Reassign to `yast-community` **ONLY IF** the bug is not used by Agama or not in SLE.
+*(Note: Verify the YaST Scope Gate in `references/queries.md` before reassigning any YaST issue — bugs against SLE 12/15 and YaST parts used by Agama must be handled by the maintainer).*
 
 ### Template: Out-of-Scope Reassignment
 ```text
@@ -151,8 +148,16 @@ Use when requested to "generate report for daily call" or "daily stand-up report
   - **Suggested Action**: Bump priority from P5 to P1/P2 and triage immediately.
 *(If no urgent P5 bugs: "No critical or urgent issues detected in recent P5 reports.")*
 
+#### 📋 GitHub Current Sprint Cards in Review / Done Missing "Review" Notes
+*(Checked against Current Sprint view: https://github.com/orgs/agama-project/projects/2/views/1 — cards in Review or Done must have a filled-in Review section with real details, not empty or placeholder text)*
+- [#<ISSUE_NUM>](https://github.com/agama-project/agama/issues/<ISSUE_NUM>) - **<Issue Title>** [Status: <Review | Done>]
+  - **Assignee**: @<GitHub Username>
+  - **Issue**: <Missing "Review" section | "Review" section is empty or contains only unedited template placeholders>
+  - **Action for Daily Call**: Point out during daily call so @<Username> can fill in what was implemented and how to test.
+*(If all cards contain filled review notes: "✅ All cards in Review and Done on the current sprint board contain filled review notes.")*
+
 #### 📬 Team Needinfo Summary
-- **Waiting on Maintainers**: <X> bugs with needinfo requested on `yast-maintainers` / `yast-internal`.
+- **Waiting on Maintainers**: <X> bugs with needinfo requested on `yast-maintainers` / `yast-internal` / `autoyast-maintainers`.
 - **Waiting on Reporters**: <Y> bugs waiting for logs/reproduction details.
 ```
 

@@ -18,7 +18,7 @@ A bug MUST satisfy all four points before the maintainer creates a card in the A
    - If network related: network configuration or installer profile is attached.
 
 3. **Product, Version, and Component Known**:
-   - The exact Agama version or ISO build (e.g. openSUSE Tumbleweed Agama ISO 10.x, ALP/SLE build number).
+   - The exact product, version, or ISO build (e.g. openSUSE Tumbleweed snapshot, openSUSE Leap, SUSE Linux Enterprise, or packages/images from the OBS devel project [systemsmanagement:Agama](https://build.opensuse.org/project/show/systemsmanagement:Agama)).
    - Subsystem identified (e.g. Storage, Network, Software selection, Web UI, D-Bus service).
 
 4. **Expected Behavior is Explicit**:
@@ -32,7 +32,7 @@ When screening a bug, classify it into one of these states:
 
 - **READY**: Meets all 4 points. Generate the Card Proposal below for the maintainer.
 - **NEEDS_INFO**: Fails point 1, 2, or 4. Draft a polite request for logs or clarification (see `references/comment-templates.md`).
-- **OUT_OF_SCOPE**: Issue lies outside Agama and team scope (e.g. kernel panic, systemd, wicked, firmware). Propose immediate reassignment. (Note: YaST bugs against SLE 12/15 or YaST components used by Agama — bootloader, storage, yast2-ruby-bindings, core — are maintained by the team; only reassign to `yast-community` if not used by Agama or not in SLE).
+- **OUT_OF_SCOPE**: Issue lies outside Agama and team scope (e.g. kernel panic, systemd, wicked; see YaST Scope Gate in `references/queries.md`). Propose immediate reassignment.
 - **DUPLICATE**: Same root cause as an existing issue. Suggest duplicate resolution.
 
 ---
@@ -45,7 +45,7 @@ When a bug is **READY**, format the output so the maintainer can easily copy-pas
 ### [Bugzilla ID] - [Short Descriptive Title]
 
 **Bugzilla**: [bsc#<BUG_ID>](https://bugzilla.suse.com/show_bug.cgi?id=<BUG_ID>)
-**Product / Version**: <e.g., openSUSE Tumbleweed Agama ISO 10.0 / Build 2026.1>
+**Product / Version**: <e.g., openSUSE Tumbleweed (snapshot YYYYMMDD) / openSUSE Leap 16.0 / OBS systemsmanagement:Agama>
 **Domain / Subsystem**: <Storage | Network | Software | Web UI | Core>
 
 #### Description
@@ -69,6 +69,12 @@ When a bug is **READY**, format the output so the maintainer can easily copy-pas
   <Paste 3-5 key lines from the log or stack trace>
   ```
 - **Initial hypothesis**: <Brief pointer to likely service, API endpoint, or component>
+
+#### Review
+*(Must be filled when moving the card to Review or Done)*
+- **Summary of changes**: <What was implemented / fixed to resolve the problem>
+- **How to test / verify**: <Specific steps or tests used to verify the fix>
+- **Evidence / Notes**: <PR link, test run logs, or screenshots>
 
 #### Suggested Next Steps on Bugzilla
 1. Set Bugzilla **URL** field to: `<GitHub issue link>` *(Crucial: This marks the bug as triaged and removes it from the maintainer's untriaged work queue)*.

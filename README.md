@@ -48,14 +48,24 @@ Host Filesystem (agama-bugzilla-ai/)
 
 ## Quick Start
 
-### 1. Configure Your Bugzilla API Key (Required)
+### 1. Configure Your API Tokens (Required)
 
-1. Create `secrets/bugzilla-token.txt`:
+1. **Bugzilla API Key** (`secrets/bugzilla-token.txt`):
    ```bash
    echo "YOUR_BUGZILLA_API_KEY" > secrets/bugzilla-token.txt
    chmod 600 secrets/bugzilla-token.txt
    ```
-   *(Note: You can generate an API key in Bugzilla under **Preferences** ➡️ **API Keys**)*.
+   *(Generate at: [https://bugzilla.suse.com](https://bugzilla.suse.com) ➡️ **Preferences** ➡️ **API Keys**)*.
+
+2. **GitHub Read-Only Personal Access Token** (`secrets/github-token.txt`):
+   ```bash
+   echo "YOUR_GITHUB_TOKEN" > secrets/github-token.txt
+   chmod 600 secrets/github-token.txt
+   ```
+   *(Generate a fine-grained token at: [https://github.com/settings/personal-access-tokens](https://github.com/settings/personal-access-tokens))*:
+   - **Repository access**: Select `agama-project` repositories only.
+   - **Repositories tab permissions**: Issues (Read-only), Pull requests (Read-only), Metadata (Read-only).
+   - **Organization tab permissions**: Projects (Read-only).
 
 ### 2. Launch the Environment
 

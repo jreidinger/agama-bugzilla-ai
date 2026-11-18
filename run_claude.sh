@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
-# run_claude.sh - Orchestration script for Agama Bugzilla AI Screener using Claude
+# run_claude.sh - Orchestration script for Agama Bugzilla & GitHub AI Screener using Claude
 #
-# 1. Verifies that secrets/bugzilla-token.txt exists and contains a valid API key
+# 1. Verifies that secrets/bugzilla-token.txt and secrets/github-token.txt exist
 # 2. Ensures latest version of Claude Code is used (rebuilding fast npm layer if outdated)
 # 3. Starts openSUSE mcp-bugzilla server in read-only mode on port 9125
-# 4. Prepares workspace/.mcp.json and workspace/.claude/settings.json
+# 4. Prepares workspace/.mcp.json (Bugzilla + GitHub read-only) and workspace/.claude/settings.json
 # 5. Mounts the isolated workspace directory to Claude (protecting top-level secrets)
 # 6. Cleans up background MCP container when Claude exits
 
@@ -14,6 +14,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SECRETS_DIR="${SCRIPT_DIR}/secrets"
 TOKEN_FILE="${SECRETS_DIR}/bugzilla-token.txt"
+GITHUB_TOKEN_FILE="${SECRETS_DIR}/github-token.txt"
 WORKSPACE_DIR="${SCRIPT_DIR}/workspace"
 
 MCP_PORT="${MCP_PORT:-9125}"
@@ -27,7 +28,7 @@ MCP_CONTAINER_NAME="agama-mcp-bugzilla-claude-$$"
 # 1. Ensure required directories exist
 mkdir -p "${SECRETS_DIR}" "${WORKSPACE_DIR}/.claude"
 
-# 2. Check that secrets/bugzilla-token.txt exists and contains an API key
+# 2. Check Bugzilla token
 if [ ! -f "${TOKEN_FILE}" ]; then
   echo "❌ Error: Secrets file '${TOKEN_FILE}' does not exist." >&2
   echo "" >&2
@@ -39,7 +40,6 @@ if [ ! -f "${TOKEN_FILE}" ]; then
   exit 1
 fi
 
-# Extract token, ignoring comment lines starting with '#' and stripping whitespace
 BUGZILLA_API_KEY="$(grep -v '^[[:space:]]*#' "${TOKEN_FILE}" | tr -d '[:space:]' || true)"
 
 if [ -z "${BUGZILLA_API_KEY}" ] || [ "${BUGZILLA_API_KEY}" = "YOUR_BUGZILLA_API_KEY_HERE" ]; then
@@ -52,7 +52,33 @@ fi
 
 echo "==> [Auth] Loaded Bugzilla API key from ${TOKEN_FILE}"
 
-# 3. Ensure container images are up-to-date
+# 3. Check GitHub read-only token
+if [ ! -f "${GITHUB_TOKEN_FILE}" ]; then
+  echo "❌ Error: Secrets file '${GITHUB_TOKEN_FILE}' does not exist." >&2
+  echo "" >&2
+  echo "Please create '${GITHUB_TOKEN_FILE}' with your read-only GitHub Personal Access Token:" >&2
+  echo "  1. Go to https://github.com/settings/personal-access-tokens" >&2
+  echo "  2. Select 'agama-project' only in repository access" >&2
+  echo "  3. Set Read-only permissions:
+     - Repositories tab: Issues, Pull requests, Metadata
+     - Organization tab: Projects" >&2
+  echo "  4. Save your token into '${GITHUB_TOKEN_FILE}':" >&2
+  echo "     echo \"YOUR_GITHUB_TOKEN\" > '${GITHUB_TOKEN_FILE}'" >&2
+  echo "     chmod 600 '${GITHUB_TOKEN_FILE}'" >&2
+  exit 1
+fi
+
+GITHUB_TOKEN="$(grep -v '^[[:space:]]*#' "${GITHUB_TOKEN_FILE}" | tr -d '[:space:]' || true)"
+
+if [ -z "${GITHUB_TOKEN}" ] || [ "${GITHUB_TOKEN}" = "YOUR_GITHUB_READONLY_TOKEN_HERE" ]; then
+  echo "❌ Error: Secrets file '${GITHUB_TOKEN_FILE}' does not contain a valid GitHub token." >&2
+  echo "Please save your actual GitHub read-only token as a single line in '${GITHUB_TOKEN_FILE}'." >&2
+  exit 1
+fi
+
+echo "==> [Auth] Loaded GitHub read-only token from ${GITHUB_TOKEN_FILE}"
+
+# 4. Ensure container images are up-to-date
 echo "==> [Fetch] Pulling latest Bugzilla MCP server image..."
 podman pull "${MCP_IMAGE}"
 
@@ -90,21 +116,31 @@ if [ "${NEED_BUILD}" = true ]; then
   fi
 fi
 
-# 4. Cleanup trap to terminate background MCP container upon script exit or signal
+# 5. Cleanup trap to terminate background MCP container and remove runtime configs upon script exit or signal
 cleanup() {
   echo ""
   echo "==> [Cleanup] Stopping Bugzilla MCP container (${MCP_CONTAINER_NAME})..."
   podman stop -t 2 "${MCP_CONTAINER_NAME}" >/dev/null 2>&1 || true
+  rm -f "${WORKSPACE_DIR}/.mcp.json"
 }
 trap cleanup EXIT INT TERM
 
-# 5. Ensure workspace .mcp.json and .claude/settings.json point to local MCP server
+# 6. Ensure workspace .mcp.json (Bugzilla + GitHub read-only) and .claude/settings.json
 cat <<EOF > "${WORKSPACE_DIR}/.mcp.json"
 {
   "mcpServers": {
     "bugzilla": {
       "type": "http",
       "url": "http://127.0.0.1:${MCP_PORT}/mcp/"
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/readonly",
+      "headers": {
+        "Authorization": "Bearer ${GITHUB_TOKEN}",
+        "X-MCP-Readonly": "true",
+        "X-MCP-Toolsets": "default,projects"
+      }
     }
   }
 }
@@ -116,7 +152,7 @@ cat <<EOF > "${WORKSPACE_DIR}/.claude/settings.json"
 }
 EOF
 
-# 6. Start the openSUSE mcp-bugzilla container in read-only mode
+# 7. Start the openSUSE mcp-bugzilla container in read-only mode
 echo "==> [MCP] Starting openSUSE Bugzilla MCP server on 127.0.0.1:${MCP_PORT}..."
 MCP_ENV_OPTS=(
   "-e" "BUGZILLA_SERVER=${BUGZILLA_SERVER}"
@@ -150,7 +186,7 @@ else
   echo "==> [MCP] Warning: Endpoint check timed out. Proceeding to launch Claude..."
 fi
 
-# 7. Launch Claude container inside isolated workspace
+# 8. Launch Claude container inside isolated workspace
 echo "==> [Claude] Starting Claude in workspace: ${WORKSPACE_DIR}..."
 
 CLAUDE_HOME="${CLAUDE_HOME:-$HOME/.claude}"
@@ -169,7 +205,10 @@ if [ -f "${CLAUDE_JSON}" ]; then
   CLAUDE_MOUNTS+=("-v" "${CLAUDE_JSON}:/root/.claude.json:Z")
 fi
 
-CLAUDE_ENV_OPTS=()
+CLAUDE_ENV_OPTS=(
+  "-e" "GITHUB_TOKEN=${GITHUB_TOKEN}"
+)
+
 if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
   CLAUDE_ENV_OPTS+=("-e" "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}")
 fi

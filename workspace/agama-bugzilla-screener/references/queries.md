@@ -190,3 +190,24 @@ Before reassigning any YaST bug:
 3. **Reassign to `yast-community` ONLY IF**:
    - The bug is **not used by Agama** (outside bootloader, storage, yast2-ruby-bindings, core), **AND**
    - The bug is **not in SLE** (e.g., openSUSE community-only YaST modules).
+
+---
+
+## 8. GitHub Current Sprint Board Review Check (Daily Call)
+
+As part of the daily call report, the screener checks the **Current sprint view** on the Agama GitHub project board:
+- **Board URL**: [https://github.com/orgs/agama-project/projects/2/views/1](https://github.com/orgs/agama-project/projects/2/views/1)
+- **Tool Mandate**: Inspect cards and comments **exclusively via GitHub MCP tools** (`projects_list`, `projects_get`, `list_issues`, `get_issue`, `list_issue_comments`). Do **NOT** use `gh` CLI commands and do **NOT** use `web_fetch` or `curl` on GitHub URLs.
+
+### Inspection Procedure for Cards in "Review" or "Done":
+1. Inspect all items/cards in the current sprint board with status or column **`Review`** or **`Done`**.
+2. For each card, verify whether it contains a **substantive "Review" section** (either in the issue description or in a comment):
+   - **Check presence**: Look for `## Review`, `### Review`, `#### Review`, `Review:`, or `Review notes`.
+   - **Check for real content (not empty, not default template)**:
+     - The section must **NOT** be empty or blank.
+     - The section must **NOT** consist only of unedited template placeholders (e.g., `<To be filled...>`, `<What was implemented...>`, `<TODO>`, `<TBD>`, `<Specific steps...>`, or unmodified template bullets).
+     - It must describe real implementation changes and verification/test steps.
+   - **Fallback to comments**: If the description has no review section or only contains unedited template text, inspect comments via `list_issue_comments`. Check if a team member posted the review details in a comment.
+3. **If missing, empty, or unedited placeholder**:
+   - Flag the card in the daily call report under `#### 📋 GitHub Current Sprint Cards in Review / Done Missing "Review" Notes`.
+   - Specify whether the section is completely missing or still contains default template text so the bug sorter can point it out during the daily call.
