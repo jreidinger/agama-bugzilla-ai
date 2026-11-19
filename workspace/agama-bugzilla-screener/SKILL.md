@@ -26,17 +26,17 @@ Screen and triage Bugzilla issues for the openSUSE/SUSE Agama installer project 
 When asked *"which bugs needs my attention"* or *"what are my duties as maintainer today"*:
 
 1. **Immediate Action — Team Mailing List Needinfos**:
-   - Query `yast-maintainers`, `yast-internal`, and `autoyast-maintainers` needinfo queues (see [references/queries.md](references/queries.md)).
-   - Must be answered **immediately** by the maintainer. Apply the YaST Scope Gate (in [references/queries.md](references/queries.md)) before reassigning.
+   - Query `yast-maintainers`, `yast-internal`, and `autoyast-maintainers` needinfo queues (see [references/queries.md](references/queries.md)). Note that L3 customer escalations usually use `yast-internal`.
+   - Must be answered **immediately** by the maintainer. Apply the YaST Scope Gate (in [references/queries.md](references/queries.md)): SLE 12/15 bugs must be handled and solved; master/16/TW bugs not affecting Agama are closed as WONTFIX.
 2. **Follow-up Action — Team Member Needinfos ($\ge$ 1 Day Unanswered)**:
    - Identify active needinfos on team members from [references/team-members.md](references/team-members.md) pending for $\ge$ 24 hours.
    - Propose pinging the member on Slack (`#proj-agama`) or escalating to their domain backup.
 3. **Review Action — Needinfos Replied by Reporters**:
    - Check bugs where reporters replied with comments or attachments for maintainer re-evaluation.
-4. **Triage Action — Incoming Untriaged Agama Bugs**:
-   - Query active Agama bugs without active needinfo.
+4. **Triage Action — Incoming Untriaged Bugzilla & GitHub Issues**:
+   - Query active Agama Bugzilla bugs without active needinfo, and check untriaged GitHub issues in the [Agama triage view](https://github.com/orgs/agama-project/projects/2/views/3).
    - **Filter Out Already-Triaged Bugs**: Exclude any bug with a GitHub issue link in its `url` field or comments (see [references/queries.md](references/queries.md)).
-   - For remaining untriaged bugs, evaluate against the 4-point checklist ([references/card-readiness.md](references/card-readiness.md)) to classify: **Card Ready**, **Needs Logs** (request via `agama logs store` or Web UI), **Out of Scope** (reassign), or **Duplicate**.
+   - For remaining untriaged bugs, evaluate against the 5-point checklist ([references/card-readiness.md](references/card-readiness.md)) to classify: **Card Ready** (with proper issue type set), **Needs Logs** (request via `agama logs store` or Web UI), **Out of Scope** (reassign or WONTFIX), or **Duplicate**.
 5. **Output Action Plan**:
    - Format using Section 7 of [references/comment-templates.md](references/comment-templates.md).
 

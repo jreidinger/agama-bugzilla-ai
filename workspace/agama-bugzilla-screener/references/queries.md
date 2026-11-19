@@ -8,13 +8,16 @@ This reference details how to query and filter Bugzilla issues for Agama bug scr
 
 Agama bug maintainers manage their shift through four primary lenses:
 1. **Maintainer Attention Queue ("which bugs needs my attention")**:
-   - **Immediate Action**: Needinfos requested on team mailing lists (`yast-maintainers` / `yast-internal`).
+   - **Immediate Action**: Needinfos requested on team mailing lists (`yast-maintainers`, `yast-internal`, `autoyast-maintainers`). *(Note: L3 customer support usually uses `yast-internal` for needinfo).*
    - **Follow-up Action ($\ge$ 1 Day)**: Needinfos requested on individual team members unanswered for at least 24 hours.
-   - **Triage Action**: Incoming untriaged Agama bugs (card readiness, logs needed, or reassignments).
+   - **Triage Action (Bugzilla & GitHub)**:
+     - Incoming untriaged Agama Bugzilla bugs (card readiness, logs needed, or reassignments).
+     - Untriaged GitHub issues in the [Agama triage view](https://github.com/orgs/agama-project/projects/2/views/3).
    - **Review Action**: Needinfos where reporters have replied with logs or comments.
 2. **Daily Stand-up Queue ("generate report for daily call")**:
    - Active high-priority bugs (L3, ship-stopper, P1, CVEs) and recent change summaries.
    - New P5 bugs scanned for misclassified critical crashes or data loss.
+   - GitHub Current sprint board review notes check ([Agama Current sprint view](https://github.com/orgs/agama-project/projects/2/views/1)).
 3. **Untriaged / No Needinfo Queue**:
    - New and confirmed Agama bugs awaiting initial triage.
 
@@ -174,22 +177,23 @@ include_fields = "count,id,creator,creation_time,text,attachment_id"
 
 The team maintains both the modern Agama installer and enterprise YaST components under specific rules:
 
-### A. Maintainer YaST Scope
-- **SLE 12 and SLE 15**: Bug maintainers must take care of YaST bugs filed against SUSE Linux Enterprise 12 and 15 (e.g., SLES 12, SLES 15). These are enterprise-supported and within the team's maintenance duties.
+### A. Maintainer YaST Scope (Active Maintenance & Solutions)
+- **SLE 12 and SLE 15**: Bug maintainers **MUST handle and solve** YaST bugs filed against SUSE Linux Enterprise 12 and 15 (e.g., SLES 12, SLES 15). These are enterprise products under active support and form part of required maintenance duties.
 - **Parts of YaST Still Used by Agama**: Only the following YaST components are still used by Agama:
   - **bootloader** (e.g., `yast2-bootloader`)
   - **storage** (e.g., `yast2-storage-ng`, `libstorage-ng`)
   - **yast2-ruby-bindings**
   - **core** (e.g., `yast2-core`, `yast2`)
-  Bugs in these components must be handled by the maintainer.
+  Bugs in these components must be handled and solved by the maintainer regardless of product.
 
-### B. Triage & Reassignment Gate
-Before reassigning any YaST bug:
-1. **Check Product**: Is the bug filed against SLE 12 or SLE 15? If **yes**, the maintainer must handle it. Do NOT reassign.
-2. **Check Component**: Is the affected YaST component used by Agama (bootloader, storage, yast2-ruby-bindings, core)? If **yes**, the maintainer must handle it. Do NOT reassign.
-3. **Reassign to `yast-community` ONLY IF**:
-   - The bug is **not used by Agama** (outside bootloader, storage, yast2-ruby-bindings, core), **AND**
-   - The bug is **not in SLE** (e.g., openSUSE community-only YaST modules).
+### B. YaST Retirement Scope (Close as WONTFIX)
+- YaST retirement is announced for:
+  - `master` branch
+  - SLES 16 / SLE 16
+  - openSUSE Leap 16
+  - openSUSE Tumbleweed (TW)
+- **Rule**: For YaST bugs filed against master, SLES 16, Leap 16, or Tumbleweed that do **NOT** affect Agama, **close as WONTFIX** (see template in `references/comment-templates.md`).
+- **SLE 12 / SLE 15 Distinction**: Do **NOT** close SLE 12 or SLE 15 bugs as WONTFIX! They must be triaged and resolved.
 
 ---
 

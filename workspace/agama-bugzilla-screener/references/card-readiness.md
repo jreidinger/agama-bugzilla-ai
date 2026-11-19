@@ -4,9 +4,9 @@ This document defines the criteria and template for turning a Bugzilla bug into 
 
 ---
 
-## 1. The 4-Point Card Readiness Checklist
+## 1. The 5-Point Card Readiness Checklist
 
-A bug MUST satisfy all four points before the maintainer creates a card in the Agama backlog:
+A bug MUST satisfy all five points before the maintainer creates a card in the Agama backlog:
 
 1. **Reproducibility or Root Cause Understood**:
    - The steps to reproduce are clear, OR
@@ -24,20 +24,30 @@ A bug MUST satisfy all four points before the maintainer creates a card in the A
 4. **Expected Behavior is Explicit**:
    - Unambiguous statement of what should have happened vs. what actually occurred.
 
+5. **Issue Type is Properly Set**:
+   - The issue type is explicitly classified as **`bug`**, **`feature`**, or **`task`**.
+
 ---
 
 ## 2. Card Status Evaluation Logic
 
 When screening a bug, classify it into one of these states:
 
-- **READY**: Meets all 4 points. Generate the Card Proposal below for the maintainer.
+- **READY**: Meets all 5 points. Generate the Card Proposal below for the maintainer.
 - **NEEDS_INFO**: Fails point 1, 2, or 4. Draft a polite request for logs or clarification (see `references/comment-templates.md`).
-- **OUT_OF_SCOPE**: Issue lies outside Agama and team scope (e.g. kernel panic, systemd, wicked; see YaST Scope Gate in `references/queries.md`). Propose immediate reassignment.
+- **OUT_OF_SCOPE**: Issue lies outside Agama scope (e.g. kernel panic, systemd, wicked; for YaST bugs not affecting Agama, close as WONTFIX; see `references/queries.md`).
 - **DUPLICATE**: Same root cause as an existing issue. Suggest duplicate resolution.
 
 ---
 
-## 3. Backlog Card Proposal Template
+## 3. Backlog Entry & Workflow Guidelines
+
+- **Summary for POs**: When an issue is moved to the backlog and contains a long discussion, add a comment with a concise summary to help Product Owners (POs) during sprint planning.
+- **Community Contributors**: If a community member wants to work on an issue, assign the issue to them and move it to the backlog. (The issue will be automatically moved to "In Progress" once a PR is opened).
+
+---
+
+## 4. Backlog Card Proposal Template
 
 When a bug is **READY**, format the output so the maintainer can easily copy-paste it into a new GitHub Issue or Agama Project card:
 
@@ -47,6 +57,7 @@ When a bug is **READY**, format the output so the maintainer can easily copy-pas
 **Bugzilla**: [bsc#<BUG_ID>](https://bugzilla.suse.com/show_bug.cgi?id=<BUG_ID>)
 **Product / Version**: <e.g., openSUSE Tumbleweed (snapshot YYYYMMDD) / openSUSE Leap 16.0 / OBS systemsmanagement:Agama>
 **Domain / Subsystem**: <Storage | Network | Software | Web UI | Core>
+**Issue Type**: <Bug | Feature | Task>
 
 #### Description
 <Concise explanation of the problem.>

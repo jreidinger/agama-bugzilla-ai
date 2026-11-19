@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "bugzilla": {
+      "url": "http://127.0.0.1:9125/mcp/",
+      "type": "http"
+    },
+    "github": {
+      "url": "https://api.githubcopilot.com/mcp/readonly",
+      "type": "http",
+      "headers": {
+        "Authorization": "Bearer YOUR_GITHUB_TOKEN_HERE",
+        "X-MCP-Readonly": "true",
+        "X-MCP-Toolsets": "default,projects"
+      }
+    }
+  }
+}

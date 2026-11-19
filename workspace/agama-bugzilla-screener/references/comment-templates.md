@@ -53,6 +53,18 @@ This is outside of Agama installer scope. Reassigning to <TARGET_PRODUCT> / <TAR
 - **Assignee**: Reset to component default (or look up via `get_component_defaults`)
 - **Direct link**: `https://bugzilla.suse.com/show_bug.cgi?id=<BUG_ID>`
 
+### Template: Closing Retired YaST Bug as WONTFIX (master, SLES 16, Leap 16, TW)
+```text
+Hello,
+
+YaST retirement has been announced for the master branch, SLES 16, Leap 16, and openSUSE Tumbleweed. As this issue does not affect SLE 12/15 or the Agama installer, we are closing this report as WONTFIX.
+```
+
+**Maintainer Action**:
+- **Status**: `RESOLVED` / `CLOSED`
+- **Resolution**: `WONTFIX`
+- **Direct link**: `https://bugzilla.suse.com/show_bug.cgi?id=<BUG_ID>`
+
 ---
 
 ## 3. Answering Maintainer Needinfo (`yast-maintainers` / `yast-internal`)

@@ -58,11 +58,11 @@ Maintainers rotate alphabetically for two-week sprints:
 3. Imobach
 4. Iván
 5. Josef
-6. Ladislav
-7. Michal
-8. Knut
+6. Knut
+7. Ladislav
+8. Michal
 
-*(When Knut finishes, the rotation restarts with Ancor).*
+*(When Michal finishes, the rotation restarts with Ancor).*
 
 ---
 
